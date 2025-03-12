@@ -1,0 +1,184 @@
+버전관리시스템(VCS):파일변화를 시간에 따라 기록했따가 나중에 특정 시점의 버전을 다시 꺼내 올 수 있는 시스템-잘못 동작하도록 수정한 코드를 작성한 후, 이전으로 되돌리기 위해 사용
+
+스냅샷:특정한 시점에서의 파일,폴더,또는 워크스페이스의 상태
+새로운 버전을 기록하기 위한 커밋(commit)을 실행하면 스냅샷이 저장
+
+modified:수정한 파일을 아직 로컬 데이터베이스에 커밋하지 않은 상태
+staged:현재 수정한 파일을 곧 커밋할 것 이라고 표시한 상태
+committed:데이터가 로컬 데이터베이스에 안정하게 저장
+
+git 디렉토리:git이 프로젝트의 메타데이터와 객체 데이터베이스를 저장하는 곳
+작업 트리:프로첵트의 특정버전을 checkout(작업자의 작업트리를 저장소의 특정 시점과 일치하도록 변경하는 작업)한 것
+staging area:곧 커밋할 파일에 대한 정보를 저장
+
+git의 작업순서
+->1.워킹 트리에서 파일 수정
+   2.수저된 파일을 stage해서 커밋할 스냅샷 생성
+   3.staging area 파일을 커밋해서 영구적인 스냅샷으로 저장
+
+CLI(command line interface)
+명령어를 직접 입력하는 방식
+git의 모든 기능 지원
+윈도우에서는 git bash 또는 git cmd 실행하고 리눅스에선 직접 shell 상에 명령어 입력
+
+GUI(graphical user interface)
+git GUI 실행
+보기 쉽게 변경사항 확인 가능
+일부 기능만 구현
+
+기본적으로 git CLI를 통해 개념 및 사용법을 익히고, 나중에 여기에 익숙해졌을 때 git UI를 필요에 따라 사용하는 것을 추천
+
+github->
+가장 큰 git repository host로, 수많은 오픈 프로젝트가 사용중
+
+
+
+git 기초
+
+git 저장소 만들기
+아직 버전관리를 하지 않는 로컬 디렉토리 하나를 선택해서 git 저장소를 적용하는 방법
+새로운 프로젝트를 시작할 때
+아래 명령어로 .git 하위 디렉토리가 만들어짐
+$ git init
+
+기존 저장소를 clone하기
+다른 프로젝트에 참여하거나 남이 만든 git 저장소를 복사하고 싶을 때
+다음 명령어로 clone되며,자동으로 'origin' 저장소 생성
+$ git clone <주소(필수)> [새로운 디렉토리명 (옵션)]
+
+파일의 라이프사이클
+untracked: git에서 관리되지 않는 파일들
+unmodified: git에서 관리되거나 수정되지 않은 파일들
+modified:수정된 파일들
+staged: 커밋하기 위해 준비된 파일들
+
+추적 파일 추가:git add[옵션] <파일명 (와일드카드 사용가능)>
+업데이트된 파일을 일괄적으로 추가하고 싶을 경우
+
+현재 상태 확인 명령어:git status [옵션]
+branch 이름은 기본값으로 main 또는 master로 설정됨
+
+변경부분 확인
+변경 부분 확인 명령어: git diff [옵션]
+옵션이 없으면 기본적으로 unstaged 파일에 대해 출력
+--cached 또는 --staged 옵션:staged 파일의 변경 부분 출력
+
+추적파일 삭제 명령어: git rm [옵션] <파일명>
+위 옵셔을 안 넣으면 기본적으로 실제 파일도 함께 삭제됨
+
+추적파일 이름변경 명령어: git mv <원래이름> <바뀔 이름>
+
+git reset HEAD [옵션] <file>
+옵션을 주지 않으면 file 상태를 unstaged로 변경
+옵션에 --hard를 주면 file의 변경 내역을 취소하고 HEAD 상의 내용으로 undo
+
+git checkout -- <file>
+git reset --hard HEAD 같은 결과
+
+커밋 올리기: git commit -m <메시지> [다른 옵션]
+옵션에 -m <메시지>를 안쓰면 메시지 입력을 위한 에디터가 뜸
+옵션에 --amend를 적게 되면 커밋 변경까지 가능
+옵션에 -a를 쓰면 "git add -u" 명령어까지 한꺼번에 처리
+커밋을 올리면 지금 작업하는 로컬 브랜치의 마지막 스냅샷을 가리키는 HEAD 포인터가 방금 올린 커밋으로 이동됨
+
+커밋 취소: git reset [옵션] HEAD^
+HEAD^는 HEAD 바로 직전의 커밋을 가리키는 포인터
+[옵션을 따로 안주면 새로 올린 커밋만 삭제되고, 커밋을 올리기 직전의 상태로 돌아감
+[옵션]에 --hard를 넣으면 파일의 변경 내역까지 모두 삭제
+
+
+리모트 저장소
+
+리모트 저장소 확인: git remote
+clone하면 'origin'이라는 리모트 저장소가 자동으로 등록
+
+새 리모트 저장소 추가:git remote add<단축이름> <url>
+
+리모트 저장소의 데이터를 끌어오기: git fetch <remote>
+
+새로 받은 브랜치의 내용을 merge할 떄:git merge <remote> <branch>
+
+위 두 명령어를 한 번에:git pull <remote> <branch>
+
+리모트 저장소에 push하기: git push <remote> <branch>
+
+리모트 저장소 살펴보기:git remote show <remote>
+
+리모트 저장소 이름 바꾸기:git remote rename <remote 원래이름> <remote 바꿀이름>
+
+리모트 저장소 삭제: git remote remove <remote>
+
+
+
+브랜치의 개념
+
+코드를 통째로 복사한 후, 원래 코드와 상관없이 독립적으로 개발하기 위한 버전
+
+브랜치 생성: git branch <이름>
+
+브랜치 이동: git checkout <이름>
+
+다른 브랜치로 다시 이동한 후 새 커밋을 올리면?
+->내용이 다른 두 test.rb가 서로 다른 브랜치에 서로 다른 커밋에서 따로 따로 존재
+
+서로 다른 브랜치를 merge
+
+master와 hotfix merge
+Fast-forward: C4 커밋이 C2 커밋에 기반하므로 master의 포인터를 C4로 이동하는 것으로 완료
+
+master와 iss53 merge
+3-way merge: 각 브랜치의 커밋 두 개와 공통 조상 하나를 사용하여 merge
+
+merge중 충돌이 나면?
+두 브랜치에서 같은 파일의 한 부분을 동시에 수정할 경우 발생
+merge하지 못하고 충돌메시지 출력
+git status 명령어를 통해 충돌난 파일 확인
+
+충돌난 파일의 내용은
+'======='위쪽의 내용은 master 브랜치의 HEAD의 내용,아래쪾의 내용은 iss53 브랜치의 내용
+
+수동으로 충돌 처리
+적절히 충돌 안나게 수정하고 <<<<<<<, =======, >>>>>>>가 포함된 행은 삭제
+이후 git add 명령어로 다시 git에 저장
+
+
+git 사용법 요약
+
+보통 코드 수정시 사용되는 git 명령어 루틴
+1.git pull
+2. 코드 수정
+3.git add <추가할 파일> 혹은 git commit-m '메시지'
+5.git push
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
