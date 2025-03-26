@@ -1,0 +1,19 @@
+import turtle as t
+
+swidth, sheight = 500,500
+
+t.title("무지개 원 그리기")
+t.shape("turtle")
+t.setup(width=swidth+50, height= sheight+50)
+t.screensize(swidth,sheight)
+t.penup()
+t.goto(0,-sheight / 2)
+t.pendown()
+t.speed(10)
+for radius in range(1,250)
+if radius % 6 ==0:
+    t.pencolor('red')
+elif radius % 5 ==0:
+    t.pencolor('orange')
+elif radius % 4 ==0:
+    
