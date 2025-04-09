@@ -10,10 +10,19 @@ t.penup()
 t.goto(0,-sheight / 2)
 t.pendown()
 t.speed(10)
-for radius in range(1,250)
-if radius % 6 ==0:
-    t.pencolor('red')
-elif radius % 5 ==0:
-    t.pencolor('orange')
-elif radius % 4 ==0:
-    
+for radius in range(1,250):
+    if radius % 6 ==0:
+        t.pencolor(red)
+    elif radius % 5 ==0:
+        t.pencolor(orange)
+    elif radius % 4 ==0:
+        t.pencolor(yellow)
+    elif radius % 3 ==0:
+        t.pencolor(green)
+    elif radius % 2 ==0:
+        t.pencolor(navyblue)
+    else :
+        t.pencolor(purple)
+
+        t.circle(radius)
+t.done()
